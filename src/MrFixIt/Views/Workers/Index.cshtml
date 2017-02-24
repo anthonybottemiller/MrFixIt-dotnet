@@ -13,6 +13,11 @@
                     {
                         <p>You have marked this active</p>
                     }
+                    @if (Job.Completed)
+                    {
+
+                        <p>You marked this job complete</p>
+                    }
                 </div>
                 @using (Html.BeginForm(null, null, FormMethod.Post, new { @id = "active-" + @Job.JobId }))
                 {
@@ -20,7 +25,28 @@
                     <input class="btn btn-warning" type="submit" value="Mark @Job.Title Active" />
 
                 }
+                @using (Html.BeginForm(null, null, FormMethod.Post, new { @id = "complete-" + @Job.JobId }))
+                {
+
+                    <input class="btn btn-danger" type="submit" value="Mark @Job.Title Complete" />
+
+                }
+
                 <script>
+                    $('#complete-'+ @Job.JobId).submit(function (event) {
+                        event.preventDefault();
+                        $.ajax({
+                            url: '@Url.Action("MarkComplete", "Jobs" , new { id= Job.JobId })',
+                            type: 'POST',
+                            dataType: 'json',
+                            success: function (result) {
+                                var resultMessage = 'You have marked this complete!';
+                                $('#active-result-@Job.JobId').empty();
+                                $('#active-result-@Job.JobId').html(resultMessage);
+                            }
+                        });
+                    });
+
                     $('#active-'+ @Job.JobId).submit(function (event) {
                         event.preventDefault();
                         $.ajax({
@@ -29,6 +55,7 @@
                             dataType: 'json',
                             success: function (result) {
                                 var resultMessage = 'You have marked this active';
+                                $('#active-result-@Job.JobId').empty();
                                 $('#active-result-@Job.JobId').html(resultMessage);
                             }
                         });
