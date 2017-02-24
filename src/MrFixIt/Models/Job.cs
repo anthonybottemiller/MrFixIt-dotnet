@@ -16,6 +16,7 @@ namespace MrFixIt.Models
         public bool Pending { get; set; }
         public virtual Worker Worker { get; set; }
 
+        //Possible bug(s)
         public Worker FindWorker(string UserName)
         {
             Worker thisWorker = new MrFixItContext().Workers.FirstOrDefault(i => i.UserName == UserName);

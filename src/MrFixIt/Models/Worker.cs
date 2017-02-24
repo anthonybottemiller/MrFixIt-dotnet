@@ -22,6 +22,7 @@ namespace MrFixIt.Models
 
         public Worker()
         {
+            //possible bug
             Avaliable = true;
         }
 
