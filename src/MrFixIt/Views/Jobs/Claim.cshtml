@@ -15,7 +15,6 @@
 <script>
     $('.job-claim').submit(function (event) {
         event.preventDefault();
-        console.log($(this).serialize());
         $.ajax({
             url: '@Url.Action("Claim")',
             type: 'POST',
