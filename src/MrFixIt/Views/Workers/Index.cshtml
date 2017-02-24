@@ -1,11 +1,4 @@
-﻿@*
-    For more information on enabling MVC for empty projects, visit http://go.microsoft.com/fwlink/?LinkID=397860
-*@
-@{
-}
-
-
-@if (User.Identity.IsAuthenticated)
+﻿@if (User.Identity.IsAuthenticated)
 {
 
     <div class="text-center">
@@ -14,8 +7,30 @@
         @foreach (var Job in Model.Jobs)
         {
             <h5>@Job.Title</h5>
+            <div id="active-result-@Job.JobId"></div>
+            @using (Html.BeginForm(null, null, FormMethod.Post, new { @id = "active-" + @Job.JobId }))
+            {
 
-        }
+                <input class="btn btn-warning" type="submit" value="Mark Active" />
+
+            }
+            <script>
+                $('#active-'+ @Job.JobId).submit(function (event) {
+                    event.preventDefault();
+                    $.ajax({
+                        url: '@Url.Action("MarkActive", "Jobs" , new { id= Job.JobId })',
+                        type: 'POST',
+                        dataType: 'json',
+                        data: { id: @Job.JobId },
+                        success: function (result) {
+                            var resultMessage = 'You have marked this active';
+                            $('#active-result-@Job.JobId').html(resultMessage);
+                        }
+                    });
+                });
+            </script>
+
+}
         @if (Model.Avaliable)
         {
             <h2>Please @Html.ActionLink("select a job", "Index", "Jobs").</h2>
