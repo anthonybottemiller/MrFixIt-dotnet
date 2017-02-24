@@ -4,10 +4,10 @@
 @{
 }
 @model MrFixIt.Models.Job
-
 <h2>Would you like to do this job?</h2>
 <hr />
-@using (Html.BeginForm())
+<div id="claim-result"></div>
+@using (Html.BeginForm(null, null, FormMethod.Post, new { @class = "job-claim"}))
 {
     @Html.HiddenFor(model => model.JobId)
     @Html.HiddenFor(model => model.Title)
@@ -17,3 +17,18 @@
     <input type="submit" value="Claim This Job" />
 }
 <p>@Html.ActionLink("Back to list", "Index")</p>
+<script>
+    $('.job-claim').submit(function (event) {
+        event.preventDefault();
+        $.ajax({
+            url: '@Url.Action("Claim")',
+            type: 'POST',
+            dataType: 'json',
+            data: $(this).serialize(),
+            success: function (result) {
+                var resultMessage = 'You have claimed the job "' + result.title + '"';
+                $('#claim-result').html(resultMessage);
+            }
+        });
+    });
+</script>
