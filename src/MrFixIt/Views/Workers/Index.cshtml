@@ -27,7 +27,6 @@
                             url: '@Url.Action("MarkActive", "Jobs" , new { id= Job.JobId })',
                             type: 'POST',
                             dataType: 'json',
-                            data: { id: @Job.JobId },
                             success: function (result) {
                                 var resultMessage = 'You have marked this active';
                                 $('#active-result-@Job.JobId').html(resultMessage);

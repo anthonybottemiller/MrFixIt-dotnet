@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using MrFixIt.Models;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.AspNetCore.Authorization;
 
 // For more information on enabling MVC for empty projects, visit http://go.microsoft.com/fwlink/?LinkID=397860
 
@@ -48,6 +49,7 @@ namespace MrFixIt.Controllers
             return Json(job);
         }
 
+        [Authorize]
         [HttpPost]
         public IActionResult MarkActive(int id)
         {
