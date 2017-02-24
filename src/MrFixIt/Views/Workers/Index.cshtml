@@ -6,29 +6,36 @@
         <h3>Your Current Jobs:</h3>
         @foreach (var Job in Model.Jobs)
         {
-            <h5>@Job.Title</h5>
-            <div id="active-result-@Job.JobId"></div>
-            @using (Html.BeginForm(null, null, FormMethod.Post, new { @id = "active-" + @Job.JobId }))
-            {
+            <div class="job">
+                <h5>@Job.Title</h5>
+                <div id="active-result-@Job.JobId">
+                    @if (Job.Pending)
+                    {
+                        <p>You have marked this active</p>
+                    }
+                </div>
+                @using (Html.BeginForm(null, null, FormMethod.Post, new { @id = "active-" + @Job.JobId }))
+                {
 
-                <input class="btn btn-warning" type="submit" value="Mark Active" />
+                    <input class="btn btn-warning" type="submit" value="Mark @Job.Title Active" />
 
-            }
-            <script>
-                $('#active-'+ @Job.JobId).submit(function (event) {
-                    event.preventDefault();
-                    $.ajax({
-                        url: '@Url.Action("MarkActive", "Jobs" , new { id= Job.JobId })',
-                        type: 'POST',
-                        dataType: 'json',
-                        data: { id: @Job.JobId },
-                        success: function (result) {
-                            var resultMessage = 'You have marked this active';
-                            $('#active-result-@Job.JobId').html(resultMessage);
-                        }
+                }
+                <script>
+                    $('#active-'+ @Job.JobId).submit(function (event) {
+                        event.preventDefault();
+                        $.ajax({
+                            url: '@Url.Action("MarkActive", "Jobs" , new { id= Job.JobId })',
+                            type: 'POST',
+                            dataType: 'json',
+                            data: { id: @Job.JobId },
+                            success: function (result) {
+                                var resultMessage = 'You have marked this active';
+                                $('#active-result-@Job.JobId').html(resultMessage);
+                            }
+                        });
                     });
-                });
-            </script>
+                </script>
+               </div>
 
 }
         @if (Model.Avaliable)
